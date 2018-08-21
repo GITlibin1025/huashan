@@ -12,7 +12,7 @@ phoneRegex = re.compile(r'''(
 	(\s|-|\.)				#空格、-、. ，\. 是转义
 	(\d{4})					#四个数字
 	(\s*(ext|x|ext\.)\s*(\d{2,5})?		#美国分机
-	)''',re.VERBOSE)					#re.VERBOSE，re下多行参数
+	 )''', re.VERBOSE)#)''',re.VERBOSE)					#re.VERBOSE，re下多行参数
 	
 	#TODO: Creat email regex.			#就是一个下一步要做什么的注释，习惯性#TODO
 	
@@ -22,12 +22,18 @@ phoneRegex = re.compile(r'''(
 	
 	
 	#email 的正则表达
+
+	
+#最根本的错误原因是中英文的混用
+#切记
+#还好可以用git diff <文件名>来进行比较差异
+
 emailRegex = re.compile(r'''(
-		[a-zA-Z0-9._%+-]+	#用户名，+至少一个
+	[a-zA-Z0-9._%+-]+	#用户名，+至少一个
 		@
 		[a-zA-Z0-9.-]+		#+至少一个
-		（\.[a-zA-Z]{2,4})
-		)''',re.VERBOSE)	 
+		(\.[a-zA-Z]{2,4}){1,2}
+		)''', re.VERBOSE)	 #修复错误：中英混用
 	
 	#TODO: Find matches in clipboard text.
 	
@@ -36,7 +42,7 @@ emailRegex = re.compile(r'''(
 	
 	#找到所有匹配
 text = str(pyperclip.paste())
-match = []
+matches = []
 for groups in phoneRegex.findall(text):
 	phoneNum = '-'.join([groups[1],groups[2],groups[3],groups[5]])
 	if group[8] != '':
